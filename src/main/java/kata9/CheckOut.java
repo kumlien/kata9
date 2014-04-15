@@ -28,10 +28,10 @@ public class CheckOut {
 		items.add(item);
 	}
 	
-	public long total() {
+	public double total() {
 		List<Item> itemsForRules = new ArrayList<Item>(items); 
-		long grossAmount = getGrossAmount();
-		long netAmount = grossAmount;
+		double grossAmount = getGrossAmount();
+		double netAmount = grossAmount;
 
 		rulesWhichApply = new ArrayList<BaseRule>();
 		
@@ -41,9 +41,7 @@ public class CheckOut {
 		
 		//Go through the list of rules which applies
 		for(BaseRule rule : rulesWhichApply) {
-			if(rule instanceof AmountBasedRule) {
-				netAmount = netAmount -= ((AmountBasedRule)rule).discount;
-			}
+			netAmount -= rule.getDiscount();	
 		}
 		
 		return netAmount;
@@ -63,8 +61,8 @@ public class CheckOut {
 	 * Print something including the total
 	 */
 	public void printReceipt() {
-		long grossAmount = getGrossAmount();
-		long netAmount = total();
+		double grossAmount = getGrossAmount();
+		double netAmount = total();
 		
 		System.out.println("\n\n********* - START OF RECEIPT - ***********\n");
 		
@@ -72,13 +70,15 @@ public class CheckOut {
 		for(String sku : productCount.keySet()) {
 			long price = Item.SKU_TO_PRICE_MAPPING.get(sku);
 			long count = productCount.get(sku);
-			System.out.println("You bought " + count + " number of " + sku + " á " + price + " = " + price * count);
+			System.out.println("You bought " + count + " number of " + sku + " á " + price + " = " + (double)(price * count));
 		}
 		
 		System.out.println("\nAmount before discounts is: \t" + grossAmount + "\n");
 		
-		for(BaseRule rule : rulesWhichApply) {
-			System.out.println("You got a discount: " + rule + " (discount = " + rule.getDiscount() + ")");
+		Map<BaseRule, Integer> ruleCount = getRuleCount(rulesWhichApply);
+		for(BaseRule bs : ruleCount.keySet()) {
+			int count = ruleCount.get(bs);
+			System.out.println("The discount '" + bs.getName() + "' was applied " + count + " number of times, totalling " + count*bs.getDiscount() + " in discounts");
 		}
 		
 		System.out.println("\nTotal discount is:\t\t" + totalDiscounts());
@@ -87,21 +87,31 @@ public class CheckOut {
 		System.out.println("\n\n********* - END OF RECEIPT - ***********");
 	}
 	
+	private Map<BaseRule, Integer> getRuleCount(List<BaseRule> rules) {
+		Map<BaseRule, Integer> aggregate = new HashMap<BaseRule, Integer>();
+		for(BaseRule bs : rules) {
+			Integer amount = aggregate.get(bs);
+			if(amount == null) amount = 0;
+			aggregate.put(bs, ++amount);
+		}
+		return aggregate;
+	}
+	
 	
 	private Map<String, Integer> getProductCount(List<Item> items) {
 		Map<String, Integer> aggregate = new HashMap<String, Integer>();
 		for(Item item : items) {
 			Integer amount = aggregate.get(item.sku);
 			if(amount == null) amount = 0;
-			aggregate.put(item.sku, amount += 1);
+			aggregate.put(item.sku,++amount);
 		}
 		
 		return aggregate;
 	}
 	
 	//Calculate total discounts
-	private long totalDiscounts() {
-		long total = 0;
+	private double totalDiscounts() {
+		double total = 0;
 		for(BaseRule rule : rulesWhichApply) {
 			total += rule.getDiscount();
 		}
@@ -109,8 +119,8 @@ public class CheckOut {
 	}
 
 	//Calculate the gross amount
-	private long getGrossAmount() {
-		long grossAmount = 0;
+	private double getGrossAmount() {
+		double grossAmount = 0;
 		for(Item item : items) {
 			grossAmount += item.price;
 		}

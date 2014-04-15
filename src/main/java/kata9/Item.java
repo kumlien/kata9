@@ -31,7 +31,7 @@ public class Item {
 	
 	public Item(String sku, long price) {
 		this.uid = UUID.randomUUID();
-		this.sku = sku;
+		this.sku = sku.toUpperCase();
 		this.price = price;
 	}
 

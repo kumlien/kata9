@@ -14,23 +14,11 @@ import kata9.Item;
  */
 public class AmountBasedRule extends BaseRule {
 	
-	
 	public final long discount;
 	
-	public final String sku;
-	
-	public final int neededItems;
-	
-	public static final Target target = Target.TOTAL;
-	
-	public final String name;
-	
-	
 	public AmountBasedRule(String name, String sku, long discount, int neededItems) {
-		this.name = name;
-		this.sku = sku;
+		super(name, sku, neededItems);
 		this.discount = discount;
-		this.neededItems = neededItems;
 	}
 	
 	/**
@@ -53,8 +41,6 @@ public class AmountBasedRule extends BaseRule {
 				return neededItems;
 			}
 		}
-		
-		
 		return 0;
 	}
 
@@ -64,7 +50,7 @@ public class AmountBasedRule extends BaseRule {
 	}
 
 	@Override
-	public long getDiscount() {
+	public double getDiscount() {
 		return discount;
 	}
 

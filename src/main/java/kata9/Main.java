@@ -2,25 +2,32 @@ package kata9;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import rules.AmountBasedRule;
 import rules.BaseRule;
 import rules.ItemBasedRule;
+import rules.PercentageBasedRule;
 
+/**
+ * Main class. 
+ * 
+ * Init with some rules. 
+ * 
+ * 
+ * @author svante
+ *
+ */
 public class Main {
-	
-	
 	
 	private static final List<BaseRule> rules = new ArrayList<BaseRule>();
 	
 	static {
 		//Add some rules for discounts
-		rules.add(new AmountBasedRule("Buy three Apples for 1.30 ","A", 20, 3));
-		rules.add(new AmountBasedRule("Buy two Bananas for .45 ","B", 15, 2));
+		rules.add(new AmountBasedRule("Buy three Apples for 130 ","A", 20, 3));
+		rules.add(new AmountBasedRule("Buy two Bananas for 45 ","B", 15, 2));
 		rules.add(new ItemBasedRule("Buy two Coconuts, get one for free!", "C", 2, 1));
+		rules.add(new PercentageBasedRule("10% discount on all Dates","D", 1, 10));
 	}
 	
 	public static void main(String... args) {
