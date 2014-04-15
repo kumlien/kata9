@@ -4,10 +4,10 @@ kata9
 
 ####Execute it!
 
-* Clone the repo (git clone https://github.com/kumlien/kata9.git)
-* cd kata9
-* mvn clean install
-* run the program something like this: mvn exec:java -Dexec.arguments="aaa" 
+* Clone the repo (`git clone https://github.com/kumlien/kata9.git`)
+* `cd kata9`
+* `mvn clean install`
+* run the program something like this: `mvn exec:java -Dexec.arguments="abcccaad"` 
 
 ####Items
 There are four items in the shop:
