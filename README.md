@@ -7,7 +7,8 @@ kata9
 * Clone the repo (`git clone https://github.com/kumlien/kata9.git`)
 * `cd kata9`
 * `mvn clean install`
-* run the program something like this: `mvn exec:java -Dexec.arguments="abcccaad"` 
+* Run the program something like this: `mvn exec:java -Dexec.arguments="abcccaad"` 
+* You should see some output on the screen (fingers crossed...) 
 
 ####Items
 There are four items in the shop:
