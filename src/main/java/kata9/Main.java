@@ -8,23 +8,19 @@ import java.util.Map;
 
 import rules.AmountBasedRule;
 import rules.BaseRule;
+import rules.ItemBasedRule;
 
 public class Main {
 	
-	private static final Map<String, Long> SKU_TO_PRICE_MAPPING = new HashMap<String, Long>();
+	
 	
 	private static final List<BaseRule> rules = new ArrayList<BaseRule>();
 	
 	static {
-		//Add some base prices
-		SKU_TO_PRICE_MAPPING.put("A", 50l);
-		SKU_TO_PRICE_MAPPING.put("B", 30l);
-		SKU_TO_PRICE_MAPPING.put("C", 20l);
-		SKU_TO_PRICE_MAPPING.put("D", 15l);
-		
 		//Add some rules for discounts
 		rules.add(new AmountBasedRule("Buy three Apples for 1.30 ","A", 20, 3));
-		rules.add(new AmountBasedRule("Buy two bananas for .45 ","B", 15, 2));
+		rules.add(new AmountBasedRule("Buy two Bananas for .45 ","B", 15, 2));
+		rules.add(new ItemBasedRule("Buy two Coconuts, get one for free!", "C", 2, 1));
 	}
 	
 	public static void main(String... args) {
@@ -38,11 +34,11 @@ public class Main {
 		
 		for(char charSku : args[0].toCharArray()) {
 			String sku = String.valueOf(charSku).toUpperCase();
-			if(sku == null || !SKU_TO_PRICE_MAPPING.containsKey(sku)) {
+			if(sku == null || !Item.SKU_TO_PRICE_MAPPING.containsKey(sku)) {
 				System.out.println("Not adding unknown sku '" + sku+ "'");
 				continue;
 			}
-			Item item = new Item(sku, SKU_TO_PRICE_MAPPING.get(sku));
+			Item item = new Item(sku, Item.SKU_TO_PRICE_MAPPING.get(sku));
 			co.scan(item);
 		}
 		

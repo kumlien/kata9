@@ -2,7 +2,9 @@ package kata9;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rules.AmountBasedRule;
 import rules.BaseRule;
@@ -64,12 +66,16 @@ public class CheckOut {
 		long grossAmount = getGrossAmount();
 		long netAmount = total();
 		
-		System.out.println("\n\n********************");
-		System.out.println("This is your receipt:\n");
-		for(Item item : items) {
-			System.out.println("\t" + item);
+		System.out.println("\n\n********* - START OF RECEIPT - ***********\n");
+		
+		Map<String, Integer> productCount = getProductCount(items);
+		for(String sku : productCount.keySet()) {
+			long price = Item.SKU_TO_PRICE_MAPPING.get(sku);
+			long count = productCount.get(sku);
+			System.out.println("You bought " + count + " number of " + sku + " á " + price + " = " + price * count);
 		}
-		System.out.println("\n\nAmount before discounts is: \t" + grossAmount + "\n");
+		
+		System.out.println("\nAmount before discounts is: \t" + grossAmount + "\n");
 		
 		for(BaseRule rule : rulesWhichApply) {
 			System.out.println("You got a discount: " + rule + " (discount = " + rule.getDiscount() + ")");
@@ -77,8 +83,23 @@ public class CheckOut {
 		
 		System.out.println("\nTotal discount is:\t\t" + totalDiscounts());
 		System.out.println("Amount after discounts is:\t" + netAmount);
+		
+		System.out.println("\n\n********* - END OF RECEIPT - ***********");
 	}
-
+	
+	
+	private Map<String, Integer> getProductCount(List<Item> items) {
+		Map<String, Integer> aggregate = new HashMap<String, Integer>();
+		for(Item item : items) {
+			Integer amount = aggregate.get(item.sku);
+			if(amount == null) amount = 0;
+			aggregate.put(item.sku, amount += 1);
+		}
+		
+		return aggregate;
+	}
+	
+	//Calculate total discounts
 	private long totalDiscounts() {
 		long total = 0;
 		for(BaseRule rule : rulesWhichApply) {
@@ -87,6 +108,7 @@ public class CheckOut {
 		return total;
 	}
 
+	//Calculate the gross amount
 	private long getGrossAmount() {
 		long grossAmount = 0;
 		for(Item item : items) {

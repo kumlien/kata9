@@ -1,10 +1,22 @@
 package kata9;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class Item {
 	
+	public static final Map<String, Long> SKU_TO_PRICE_MAPPING = new HashMap<String, Long>();
+	
 	private final UUID uid;
+	
+	static {
+		//Add some base prices
+		SKU_TO_PRICE_MAPPING.put("A", 50l);
+		SKU_TO_PRICE_MAPPING.put("B", 30l);
+		SKU_TO_PRICE_MAPPING.put("C", 20l);
+		SKU_TO_PRICE_MAPPING.put("D", 15l);
+	}
 	
 	/**
 	 * The sku of this product

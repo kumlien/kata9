@@ -1,9 +1,7 @@
 package rules;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import kata9.Item;
 
@@ -50,7 +48,7 @@ public class AmountBasedRule extends BaseRule {
 				matchingItems.add(item);
 			}
 			if(matchingItems.size() == neededItems) {
-				System.out.println("AmountBasedRule applies, removing " + neededItems + " items from the cart");
+				System.out.println(name + " applies, removing " + neededItems + " items from the cart");
 				cart.removeAll(matchingItems);
 				return neededItems;
 			}
