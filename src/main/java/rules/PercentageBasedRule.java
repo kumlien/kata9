@@ -1,8 +1,5 @@
 package rules;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import kata9.Item;
 
 

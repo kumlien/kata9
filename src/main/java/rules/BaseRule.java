@@ -25,7 +25,7 @@ public abstract class BaseRule {
 	}
 	
 	/**
-	 * Will consume the number of items uses by this rule (if any).
+	 * Will consume the number of items used by this rule (if any).
 	 * 
 	 * @param items
 	 * @return the number of items consumed
@@ -34,7 +34,7 @@ public abstract class BaseRule {
 		List<Item> matchingItems = new ArrayList<Item>();
 		
 		for(Item item : cart) {
-			System.out.println("AmountBasedRule comparing sku " + sku + " with " + item.sku);
+			System.out.println("BaseRule comparing sku " + sku + " with " + item.sku);
 			if(item.sku.equals(sku)) {
 				matchingItems.add(item);
 			}
